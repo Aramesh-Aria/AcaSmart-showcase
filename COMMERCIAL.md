@@ -11,9 +11,13 @@
 - Weekly enrollment scheduling with conflict detection
 - Per-session attendance (Present / Absent / Canceled)
 - Tuition & extra payments, debt tracking
-- Financial reporting (Excel export)
-- Automatic renewal-reminder SMS (IPPanel) when 1 session remains
-- Contact directory & manual bulk SMS
+- Dashboard with live KPIs (active students, outstanding debt, revenue, absence rate)
+- Financial, attendance and summary reports (Excel export)
+- Automatic renewal-reminder SMS (IPPanel) when 1 session remains — sent in the background, with a Notification Center for failed or due reminders
+- SMS Delivery Report: full history of every message attempt
+- Contact directory & manual bulk SMS with per-recipient results and retry
+- One-click verified backup & guarded restore
+- Light and dark themes, full Persian RTL interface
 
 **In production** at a music academy in Iran since 2023. 12+ releases.
 
@@ -36,7 +40,7 @@
 - **Source code:** Not included. Source escrow available for Enterprise tier.
 
 ### What You Get
-- Installable builds (Windows `.exe`, macOS `.app`)
+- Installable builds: Windows 7–11 installer, macOS app (Apple Silicon & Intel), Linux bundle
 - License key(s) for your device(s)
 - 1 year of updates (new releases)
 - Email support (Persian/English)
@@ -69,10 +73,10 @@
 
 ## Data Ownership & Portability
 
-- **Your data, always:** SQLite DB lives on YOUR machine (`~/Library/Application Support/AcaSmart/acasmart.db` or `%LOCALAPPDATA%\AcaSmart\acasmart.db`)
+- **Your data, always:** SQLite DB lives on YOUR machine (`~/Library/Application Support/AcaSmart/acasmart.db`, `%LOCALAPPDATA%\AcaSmart\acasmart.db`, or `~/.local/share/AcaSmart/` on Linux)
 - **No cloud dependency:** App works 100% offline (except SMS sending)
 - **Export anytime:** Excel reports for students, payments, attendance, teachers
-- **Backup:** Single file copy — no proprietary format
+- **Backup:** Built-in verified backup to a single self-contained file — no proprietary format
 - **No vendor lock-in:** Schema documented in [ARCHITECTURE.md](ARCHITECTURE.md)
 
 ---

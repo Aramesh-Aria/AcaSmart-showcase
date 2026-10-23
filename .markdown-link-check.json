@@ -1,0 +1,10 @@
+{
+  "ignorePatterns": [
+    "https://aria-aramesh.ir/public/media/portfolio/project-1-demo.mp4",
+    "SCREENSHOTS/"
+  ],
+  "retryCount": 3,
+  "retryDelayMs": 1000,
+  "aliveStatusCodes": [200, 206],
+  "deadStatusCodes": [404, 410, 500]
+}

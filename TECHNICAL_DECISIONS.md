@@ -1,6 +1,6 @@
 # AcaSmart — Technical Decisions (ADR Summaries)
 
-> Architecture Decision Records 0001–0009, condensed for quick review. Full ADRs in `docs/adr/`.
+> Architecture Decision Records 0001–0012 (13 records — two share number 0001), condensed for quick review. Full ADRs live in `docs/adr/` of the private repository.
 
 ---
 
@@ -13,6 +13,16 @@
 | Installer-based keys were Windows-only, visible in script, required rebuild per key | Added `cryptography` dependency (C extensions); device fingerprinting uses `subprocess` (wmic on Win7) |
 
 **Key details:** Cross-platform (Win 7+, macOS ARM64/x86), offline validation after activation, key renewal without app rebuild, survives backup/restore via fingerprint match.
+
+---
+
+## ADR-0001 (domain): One-to-One Lessons First
+
+**Decision:** Every enrollment schedule, session, attendance record, tuition cycle, payment and renewal reminder belongs to **one Student in one Class**. Group classes are out of scope.
+
+| Why | Trade-off Accepted |
+|-----|-------------------|
+| The academy teaches one-to-one; group support changes session identity, attendance, conflicts, billing, reporting and notifications at once | A future group-class feature is a new model, not a flag |
 
 ---
 
@@ -108,11 +118,48 @@
 
 ---
 
+## ADR-0010: Sidebar Shell Replaces Multi-Window
+
+**Decision:** One `ShellWindow` — sidebar (`QListWidget`) + `QStackedWidget`. Every module is a Page built once and never torn down; the shell calls `load_data` / `refresh_data` on activation. One `navigate_to()` hub serves the sidebar, the Ctrl+K command palette, notification cards and in-page links.
+
+| Why | Trade-off Accepted |
+|-----|-------------------|
+| A launcher grid of separate windows with a `return_target` back button fragmented navigation and made "go to the right page for this card" impossible | One-shot refactor of every manager window into a page; Reports collapsed into one page with an internal sub-nav |
+
+**Guardrail:** `test_retired_patterns.py` fails if `BaseSecondaryWindow` / `return_target` reappear. RTL is applied app-wide, so the sidebar sits on the right.
+
+---
+
+## ADR-0011: SMS Sending Off the UI Thread
+
+**Decision:** Both provider calls — the automatic renewal reminder and the manual bulk invitation — run on `SmsSendWorker` (`QThread` + signals). Everything else stays synchronous (local SQLite is cheap).
+
+| Why | Trade-off Accepted |
+|-----|-------------------|
+| The SMS provider is the only network dependency; a slow or hanging call froze the whole UI, and a frozen UI cannot observe the exact provider status the domain rule depends on | Thread lifetime must be managed (workers are parented to their page; tests join them before teardown) |
+
+**Rule enforced:** a Renewal Reminder counts as sent only on an explicit success reported back by the worker.
+
+---
+
+## ADR-0012: Append-Only SMS Send Log Alongside the Latest-Outcome Ledger
+
+**Decision:** Keep `sms_notifications` as a **latest-outcome ledger** (one row per student-term, overwritten — answers *"may we resend?"*) and add an **append-only `sms_send_log`** (migration v8 — answers *"what happened, and when?"*). Both reminder and manual sends write one log row per attempt outcome.
+
+| Why | Trade-off Accepted |
+|-----|-------------------|
+| The ledger cannot hold attempt history (`UNIQUE(student_id, term_id)`, overwrite semantics) and manual SMS persisted nothing | Two SMS tables coexist on purpose; v8 backfills one log row per ledger row so the report has history from day one |
+
+**Not stored:** the rendered SMS body (the provider renders it from template parameters) and `DISABLED` attempts.
+
+---
+
 ## Decision Summary Table
 
 | ADR | Decision | Reversible? | Blast Radius |
 |-----|----------|-------------|--------------|
 | 0001 | Ed25519 license system | Yes (key rotation) | Medium — new dep, new tables |
+| 0001 (domain) | One-to-one lessons first | Yes (scope) | High — shapes every table |
 | 0002 | Schedule-as-truth (drop `sessions`) | **No** (data migration) | **High** — core domain rewrite |
 | 0003 | Snapshotted pricing | Yes (add column) | Low — additive |
 | 0004 | Date-keyed attendance | No (schema) | Medium — migration needed |
@@ -121,6 +168,9 @@
 | 0007 | Guardrails over audit | Yes (add later) | Low — policy only |
 | 0008 | Backed-up migrations | Yes (process) | Low — infrastructure |
 | 0009 | Merge 1-hr splits | **No** (data) | High — one-time migration |
+| 0010 | Sidebar shell | Yes (UI only) | High — every window became a page |
+| 0011 | SMS off the UI thread | Yes | Medium — threading in two pages |
+| 0012 | Append-only send log | Yes (additive) | Low — new table + report |
 
 ---
 

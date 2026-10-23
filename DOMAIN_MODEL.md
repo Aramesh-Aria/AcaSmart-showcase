@@ -62,9 +62,24 @@ An SMS reminder sent when **exactly one session remains** in a Term, after recor
 _Avoid:_ End-of-term message, Generic SMS
 
 ### Manual SMS
-A user-initiated message sent to selected Students outside the automatic Renewal Reminder workflow. Manual SMS may be logged, but it does not mark a Term's Renewal Reminder as sent unless explicitly sent as that Term's Renewal Reminder.
+A user-initiated message sent to selected Students outside the automatic Renewal Reminder workflow. Manual SMS attempts are recorded in the Send Log, but they never mark a Term's Renewal Reminder as sent.
 
 _Avoid:_ Renewal reminder
+
+### Send Log
+An **append-only** history of every attempted outgoing SMS — Renewal Reminders and Manual SMS alike — one entry per attempt, carrying the recipient, message kind, outcome, and send time. Entries are never overwritten; it answers "what was sent to whom, when, and what happened." The rendered message body is never stored (the provider renders it from template parameters). Distinct from the Renewal Reminder ledger, which keeps only the **latest outcome** per Student Term for resend logic.
+
+_Avoid:_ SMS ledger, inbox, pending list
+
+### Send Outcome
+The final result of one logged send attempt: **Sent**, **Failed**, or **Unknown**. There is no stored Pending state — an attempt is logged only once its outcome is known — and disabled sending logs nothing.
+
+_Avoid:_ Pending
+
+### SMS Delivery Report
+A read-only report over the Send Log showing recipient, outcome, and send time, with status, date-range, student, and message-kind filters.
+
+_Avoid:_ Call report
 
 ---
 
@@ -169,6 +184,35 @@ A modal window shown on first launch (or when license expires/invalid) before th
 
 ---
 
+## Application Shell (UI vocabulary)
+
+### Shell Window
+The single main window (ADR-0010): a sidebar listing Modules plus a stacked Page area. Navigation of any kind — sidebar, in-page links, Command Palette, Notification Center cards — routes only through its `navigate_to()` hub.
+
+_Avoid:_ Dashboard window, secondary windows, back button
+
+### Module
+A main app capability — Attendance, Payments, Manual SMS, Term Enrollment, Pricing Profiles, Students, Teachers, Classes, Reports, Settings — shown as a sidebar entry and one Page.
+
+_Avoid:_ Window, screen tab
+
+### Page
+The widget hosting one Module inside the Shell. Built once, never torn down; refreshed from local repos each time the Shell activates it.
+
+_Avoid:_ Screen, dialog
+
+### Command Palette
+A modal search dialog (Ctrl+K or the toolbar search box) with navigation Commands that route to Modules and app Commands (theme toggle, instant backup, exit).
+
+_Avoid:_ Menu item, launcher button
+
+### Notification Center
+A read-only card dialog fed by local notification-eligibility data (Reminder-sendable Terms; failed/unknown Renewal Reminder sends). Clicking a card routes to the responsible Module; the toolbar badge always reflects local data, never the SMS provider.
+
+_Avoid:_ SMS list, inbox
+
+---
+
 ## Relationship Diagram
 
 ```
@@ -179,7 +223,7 @@ Student ──────┬──────► Financial Account ◄──�
               │                   │                    │
               │                   └──────► Attendance (Present/Absence/Canceled)
               │
-              └──────► Renewal Reminder (SMS)
+              └──────► Renewal Reminder (SMS) ──► Send Log (every attempt)
               │
               └──────► Enrollment Schedule (source of truth)
 ```
@@ -191,10 +235,12 @@ Student ──────┬──────► Financial Account ◄──�
 1. **One active Term per Student per Class** — enforced by partial unique index: `UNIQUE(student_id, class_id) WHERE end_date IS NULL`
 2. **No overlapping Enrollment Schedules** — student or teacher cannot have interval-overlapping weekly slots
 3. **Term pricing snapshotted** — `tuition_fee`, `sessions_limit`, `currency_unit` copied to `student_terms` at creation
-4. **Completion derived** — `end_date` set/cleared automatically by `refresh_term_completion()`
-5. **Renewal SMS ledger only on success** — failed/disabled sends stay resendable
-6. **Deletion blocked on history** — terms with payments/attendance cannot be deleted
-7. **License one-per-device** — partial unique index on `licenses(device_fingerprint) WHERE is_active=1`
+4. **Completion derived** — `end_date` set/cleared automatically by `terms_repo.refresh_completion()`
+5. **Renewal Reminder counts as sent only on explicit provider success** — the latest-outcome ledger records `failed` / `unknown` attempts so they stay resendable; disabled sending records nothing
+6. **Send Log is append-only** — one row per attempt, never updated
+7. **Deletion blocked on history** — terms with payments/attendance cannot be deleted
+8. **Tuition Payment capped** — a tuition payment cannot exceed the Term's remaining tuition debt
+9. **License one-per-device** — partial unique index on `licenses(device_fingerprint) WHERE is_active=1`
 
 ---
 
@@ -215,3 +261,5 @@ Student ──────┬──────► Financial Account ◄──�
 | Enrollment Schedule | برنامه ثبت‌نام | UI, code |
 | License Key | کلید لایسنس | UI, code |
 | Trial | دوره آزمایشی | UI, code |
+| SMS Delivery Report | گزارش پیامک‌ها | UI |
+| Dashboard | داشبورد | UI |

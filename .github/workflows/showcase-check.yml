@@ -1,0 +1,71 @@
+name: Showcase Validation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    name: Validate Showcase
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check required files exist
+        run: |
+          required_files=(
+            "README.md"
+            "ARCHITECTURE.md"
+            "DOMAIN_MODEL.md"
+            "TECHNICAL_DECISIONS.md"
+            "TEST_STRATEGY.md"
+            "DEPLOYMENT.md"
+            "COMMERCIAL.md"
+            "CONTRIBUTING.md"
+            "LICENSE"
+            "VIDEO_DEMO.md"
+          )
+          for f in "${required_files[@]}"; do
+            if [[ ! -f "$f" ]]; then
+              echo "❌ Missing: $f"
+              exit 1
+            fi
+            echo "✅ Found: $f"
+          done
+
+      - name: Validate markdown links
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          config-file: .markdown-link-check.json
+
+      - name: Check license header
+        run: |
+          if ! grep -q "FSL-1.0-Apache-2.0" LICENSE; then
+            echo "❌ LICENSE must be FSL-1.0-Apache-2.0"
+            exit 1
+          fi
+          echo "✅ License is FSL-1.0-Apache-2.0"
+
+      - name: Validate README structure
+        run: |
+          # Check required sections
+          sections=(
+            "For Hiring Managers"
+            "Documentation Index"
+            "Architecture at a Glance"
+            "Standout Features"
+            "Tech Stack"
+            "Testing Strategy"
+            "License"
+            "Contact"
+          )
+          for s in "${sections[@]}"; do
+            if ! grep -q "$s" README.md; then
+              echo "❌ README missing section: $s"
+              exit 1
+            fi
+          done
+          echo "✅ All required README sections present"
