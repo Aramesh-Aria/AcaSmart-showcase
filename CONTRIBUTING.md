@@ -46,8 +46,8 @@ If you're evaluating this for a hiring decision:
 1. **Start here:** [README.md](README.md) — 30-second summary + architecture overview
 2. **Deep dive:** [ARCHITECTURE.md](ARCHITECTURE.md) — module map, data flows, license system
 3. **Domain expertise:** [DOMAIN_MODEL.md](DOMAIN_MODEL.md) — how I model complex business rules
-4. **Decision quality:** [TECHNICAL_DECISIONS.md](TECHNICAL_DECISIONS.md) — 13 ADRs with trade-offs
-5. **Testing rigor:** [TEST_STRATEGY.md](TEST_STRATEGY.md) — 604 tests, real SQLite, headless GUI tests, CI on Windows/macOS/Linux
+4. **Decision quality:** [TECHNICAL_DECISIONS.md](TECHNICAL_DECISIONS.md) — 14 ADRs with trade-offs
+5. **Testing rigor:** [TEST_STRATEGY.md](TEST_STRATEGY.md) — 653 tests, real SQLite, headless GUI tests, CI on Windows/macOS/Linux
 6. **Delivery capability:** [DEPLOYMENT.md](DEPLOYMENT.md) — CI-built releases for 5 targets, license ops
 
 **Want to see the actual source code?** Email me (aramesh_aria@yahoo.com) and I'll grant 30-day access to the private repository, or schedule a live walkthrough call.

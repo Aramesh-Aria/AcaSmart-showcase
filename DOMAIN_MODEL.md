@@ -90,6 +90,16 @@ A Shamsi/Jalali calendar date used for academy operations, stored and displayed 
 
 _Avoid:_ Gregorian business date
 
+### Academy Today
+The current Business Date as it is in Iran (UTC+3:30, no daylight saving), regardless of the computer's own timezone setting. It is the default date wherever the app means "today".
+
+_Avoid:_ System date, local date
+
+### Record Timestamp
+The Gregorian date and time at which a row was created, changed, or a send was attempted. It is a system record, not a Business Date, and is shown to users only after conversion to Jalali.
+
+_Avoid:_ Business Date, Shamsi timestamp
+
 ### Lesson Time
 A local academy time for scheduling lessons, stored and displayed as `HH:mm`.
 

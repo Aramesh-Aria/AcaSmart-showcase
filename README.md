@@ -17,10 +17,10 @@
 | Aspect | Detail |
 |--------|--------|
 | **Role** | Sole developer — requirements → domain modeling → architecture → implementation → tests → packaging → releases |
-| **Scale** | Production desktop app, used daily by the admin of a music academy; 12+ tagged releases (current: `v1.3.21`) |
+| **Scale** | Production desktop app, used daily by the admin of a music academy; 12+ tagged releases (current: `v1.4.0`) |
 | **Hardest problems solved** | Schedule-as-truth domain model (no `sessions` table), derived & reversible term completion, three-state attendance with reschedule-as-cancellation, SMS sends moved off the UI thread with an exact-outcome ledger, Ed25519 offline license system with device binding & trial |
 | **Tech depth** | SQLite migrations v2–v8 (WAL, online-backup before every migration), Shamsi/Jalali calendar throughout, single-window sidebar shell with Ctrl+K command palette, token-based light/dark theming, cross-platform PyInstaller builds from CI |
-| **Testing** | **604 pytest tests** — domain/repo tests over real SQLite **plus ~490 headless pytest-qt GUI tests** that drive real pages (save attendance, send SMS through a fake transport, navigate the shell); CI on Windows (Py 3.8 & 3.11), macOS and Linux |
+| **Testing** | **653 pytest tests** — domain/repo tests over real SQLite **plus ~540 headless pytest-qt GUI tests** that drive real pages (save attendance, send SMS through a fake transport, navigate the shell); CI on Windows (Py 3.8 & 3.11), macOS and Linux |
 | **Delivery** | One GitHub Actions workflow builds **5 targets** — Windows 7 & Windows 10 installers, macOS arm64 & Intel apps, Linux bundle — and attaches them to the release |
 
 **Live demo:** [Video walkthrough](https://aria-aramesh.ir/public/media/portfolio/project-1-demo.mp4) (recorded on v1.1, before the shell redesign) · [Screenshots](SCREENSHOTS/) · gallery below
@@ -33,7 +33,7 @@
 |----------|----------|---------|
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Engineers | Layered architecture, data flow, module map |
 | [DOMAIN_MODEL.md](DOMAIN_MODEL.md) | Engineers/PMs | Canonical domain vocabulary, invariants |
-| [TECHNICAL_DECISIONS.md](TECHNICAL_DECISIONS.md) | Architects | 13 ADRs with trade-off tables |
+| [TECHNICAL_DECISIONS.md](TECHNICAL_DECISIONS.md) | Architects | 14 ADRs with trade-off tables |
 | [TEST_STRATEGY.md](TEST_STRATEGY.md) | QA/Leads | Test philosophy, GUI testing, CI matrix |
 | [DEPLOYMENT.md](DEPLOYMENT.md) | DevOps/Engineers | Build pipeline, release process, license operations |
 | [COMMERCIAL.md](COMMERCIAL.md) | Buyers/Partners | Licensing terms, pricing model, support |
@@ -76,7 +76,7 @@ ui/pages/*.py       → One thin page per module (built once, refreshed on activ
 | **SMS Delivery Report** | Append-only send log (migration v8) — every attempt with recipient, kind, outcome and time; filterable |
 | **Verified backup / restore** | WAL-safe online backup, validated before restore, guarded by confirmation |
 | **Ed25519 license system** | Offline validation, hardware-bound device fingerprint, 7-day trial, yearly expiry, key rotation |
-| **Shamsi/Jalali throughout** | All business dates Persian calendar; custom date picker; Persian collation; full RTL |
+| **Shamsi/Jalali throughout** | All business dates Persian calendar; Jalali-native date picker (own month grid, no Gregorian widget underneath); "today" pinned to Iran time (fixed UTC+3:30, immune to stale DST rules on Windows 7); Persian collation; full RTL |
 
 ---
 
@@ -90,6 +90,7 @@ All screenshots use fictional demo data.
 | ![Attendance](SCREENSHOTS/attendance.png) **Attendance** — computed roster, cancel, resend reminder | ![Command palette](SCREENSHOTS/command_palette.png) **Ctrl+K command palette** |
 | ![Notification center](SCREENSHOTS/notification_center.png) **Notification Center** — failed & due reminders | ![Attendance report](SCREENSHOTS/report_attendance.png) **Attendance report** — per-date status grid, Excel export |
 | ![Financial report](SCREENSHOTS/report_financial.png) **Financial report** — tuition, extras, debt per term | ![SMS delivery report](SCREENSHOTS/report_sms_delivery.png) **SMS Delivery Report** — append-only send log |
+| ![Jalali date picker](SCREENSHOTS/date_picker.png) **Jalali date picker** — month/year dropdowns, Persian digits, Friday and today marked | ![Jalali date picker (dark)](SCREENSHOTS/date_picker_dark.png) **Date picker, dark theme** — same grid on the dark tokens |
 
 More in [SCREENSHOTS/](SCREENSHOTS/) and the index in [VIDEO_DEMO.md](VIDEO_DEMO.md).
 
@@ -109,13 +110,13 @@ More in [SCREENSHOTS/](SCREENSHOTS/) and the index in [VIDEO_DEMO.md](VIDEO_DEMO
 | Packaging | PyInstaller + Inno Setup (Windows), PyInstaller `.app` (macOS), PyInstaller one-dir (Linux) |
 | CI/CD | GitHub Actions — test matrix on 4 OS/Python configs; build workflow for 5 targets; ruff lint |
 | Crypto | `cryptography` (Ed25519), `keyring` (trial persistence) |
-| Testing | pytest, pytest-qt (headless `offscreen`), 604 tests |
+| Testing | pytest, pytest-qt (headless `offscreen`), 653 tests |
 
 ---
 
 ## 📦 Releases & Distribution
 
-- **12+ tagged releases** (current: `v1.3.21`)
+- **12+ tagged releases** (current: `v1.4.0`)
 - Built by CI on every `v*` tag and attached to the GitHub Release:
 
 | Asset | Platform |
@@ -138,7 +139,7 @@ tests/
 ├── test_attendance_recording.py, test_renewal_reminder.py           # use cases, fake SMS transport
 ├── test_notification_feed.py, test_payments_repo.py, ...            # eligibility, debt caps
 ├── integration/test_license_e2e.py                                  # trial → activate → expire → renew
-└── unit/                                                            # ~490 tests, mostly pytest-qt
+└── unit/                                                            # ~540 tests, mostly pytest-qt
     ├── test_attendance_page.py, test_sms_page.py, test_reports_page.py, ...   # real page flows
     ├── test_shell.py, test_command_palette*.py, test_notification_center.py   # navigation hub
     ├── test_sms_worker.py, test_backup_service.py, test_connection_lifecycle.py

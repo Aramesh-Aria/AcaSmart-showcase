@@ -31,6 +31,7 @@
 ┌─────────────────────────────────────────────────────────────┐
 │                      CORE DOMAIN                             │
 │  core/schedule.py      Weekly occurrence math (Shamsi)      │
+│  core/jalali_calendar.py  Academy Today + month-grid math   │
 │  core/license.py       Validation, trial, device binding    │
 │  core/device_fingerprint.py  Cross-platform HW ID           │
 │  core/config.py        .env loaded once, typed accessors    │
@@ -90,6 +91,7 @@ The app used to be a launcher dashboard that opened a separate window per module
 | Module | Responsibility |
 |--------|----------------|
 | `schedule.py` | Pure Shamsi date math: `days_between`, `is_weekly_occurrence`, `occurrence_dates`, `add_weeks`, `week_start_shamsi`, `weekday_fa`, `first_on_or_after` |
+| `jalali_calendar.py` | Academy Today (`academy_today` / `academy_now`: UTC + fixed 3:30, ADR-0013) and Qt-free Jalali month-grid math for the date popup: Saturday-first grid, Esfand leap years, month stepping, day clamping, year range |
 | `license.py` | Ed25519 verification, trial logic, device fingerprint matching, license storage |
 | `device_fingerprint.py` | Cross-platform stable HW ID (Win: wmic with hidden console, macOS: IOPlatformUUID, Linux: machine-id); computed once per process |
 | `config.py` | Single seam over `.env`: loaded once (path-aware, works inside the PyInstaller bundle), typed accessors for admin and IPPanel settings |
@@ -316,7 +318,8 @@ git tag v1.x.y  ──▶  GitHub Actions: .github/workflows/build.yml
 
 - **Calendar:** All business dates stored/displayed as Shamsi `YYYY-MM-DD` text
 - **Collation:** Custom SQLite collation (`fa_collation`) for correct Persian sorting
-- **UI:** App-wide `RightToLeft` layout, Vazirmatn font bundled, Jalali date picker (`ShamsiDatePicker` / `ShamsiDateField`)
+- **UI:** App-wide `RightToLeft` layout, Vazirmatn font bundled, Jalali-native date picker (`ShamsiDatePicker` / `ShamsiDateField` over `ShamsiDatePopup`'s own month grid — Shamsi strings in and out, no Gregorian widget)
+- **Today:** every default date comes from Academy Today (Iran time, fixed UTC+3:30), not the computer's timezone; Record Timestamps stay on the computer's clock
 - **Input:** Phone, money and national-code fields accept Persian digits and normalize them; national codes are checksum-validated
 - **Reports:** Excel exports with Persian headers
 

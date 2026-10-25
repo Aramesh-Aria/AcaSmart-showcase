@@ -17,7 +17,7 @@
 
 ---
 
-## Test Inventory (604 tests)
+## Test Inventory (653 tests)
 
 | Area | Files | What they prove (real test names) |
 |------|-------|-----------------------------------|
@@ -32,10 +32,12 @@
 | **License** | `unit/test_license.py`, `unit/test_license_dialog.py`, `integration/test_license_e2e.py` | `test_prebound_key_only_works_on_correct_device`, `test_backup_restore_different_device_license_invalid`, `test_trial_expires_license_required` |
 | **Device fingerprint** | `unit/test_device_fingerprint.py` | `test_wmic_spawns_with_create_no_window`, `test_fingerprint_computed_once_per_process`, `test_wmic_timeout_handled` |
 | **Input widgets** | `unit/test_input_widgets.py`, `unit/test_shamsi_date_field.py` | `test_persian_digits_are_normalized_from_text`, `test_checksum_failure_marked_invalid_and_value_none`, `test_10_digit_starting_with_9_is_normalized` |
+| **Jalali calendar & Academy Today** | `unit/test_jalali_calendar.py` | `test_iran_midnight_is_at_2030_utc`, `test_no_daylight_saving_in_summer`, `test_esfand_in_a_leap_year_has_30_days`, `test_day_clamps_to_esfand_of_a_common_year` |
+| **Date picker** | `unit/test_shamsi_date_popup.py`, `unit/test_shamsi_date_picker.py` | `test_single_click_selects_without_closing`, `test_next_month_arrow_rolls_into_the_next_year`, `test_left_arrow_is_the_next_day_in_rtl`, `test_has_no_gregorian_api` |
 
 ### GUI tests (pytest-qt, headless)
 
-~490 tests under `tests/unit/` run every page under `QT_QPA_PLATFORM=offscreen` and assert on what the user would see or what lands in the DB:
+~540 tests under `tests/unit/` run every page under `QT_QPA_PLATFORM=offscreen` and assert on what the user would see or what lands in the DB:
 
 | Page / component | Example flows |
 |------------------|---------------|

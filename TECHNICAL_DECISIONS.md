@@ -1,6 +1,6 @@
 # AcaSmart — Technical Decisions (ADR Summaries)
 
-> Architecture Decision Records 0001–0012 (13 records — two share number 0001), condensed for quick review. Full ADRs live in `docs/adr/` of the private repository.
+> Architecture Decision Records 0001–0013 (14 records — two share number 0001), condensed for quick review. Full ADRs live in `docs/adr/` of the private repository.
 
 ---
 
@@ -154,6 +154,18 @@
 
 ---
 
+## ADR-0013: Academy Today Uses a Fixed UTC+3:30 Offset
+
+**Decision:** The default "today" (Academy Today) is the computer's UTC clock plus a hard-coded +3:30 — not the computer's timezone setting and not `zoneinfo`/tz data. The date picker became Jalali-native at the same time: its own month grid, Shamsi strings in and out.
+
+| Why | Trade-off Accepted |
+|-----|-------------------|
+| Iran abolished DST in 2022, so a fixed offset *is* `Asia/Tehran`; un-updated Windows 7 machines (the production target) still apply the old DST rule and shifted "today" by an hour around midnight; `zoneinfo` doesn't exist on Python 3.8 | The constant must change if Iran changes its offset; a machine whose wall clock was hand-corrected for stale DST has a wrong UTC and inherits that error near midnight |
+
+**Unchanged on purpose:** Record Timestamps (`created_at`, `sent_at`, …) stay on the computer's clock via SQLite `datetime('now','localtime')` — moving them would mean table rebuilds for the column defaults. License and trial dates stay Gregorian.
+
+---
+
 ## Decision Summary Table
 
 | ADR | Decision | Reversible? | Blast Radius |
@@ -171,6 +183,7 @@
 | 0010 | Sidebar shell | Yes (UI only) | High — every window became a page |
 | 0011 | SMS off the UI thread | Yes | Medium — threading in two pages |
 | 0012 | Append-only send log | Yes (additive) | Low — new table + report |
+| 0013 | Academy Today = UTC+3:30 | Yes (one constant) | Low — every "today" goes through one function |
 
 ---
 

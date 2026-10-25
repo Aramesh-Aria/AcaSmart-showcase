@@ -104,6 +104,8 @@ All in [SCREENSHOTS/](SCREENSHOTS/), captured from **v1.3.21** on macOS (Retina,
 | `settings.png` | Academy settings, verified backup/restore, password and license details |
 | `command_palette.png` | Ctrl+K command palette over the dashboard |
 | `notification_center.png` | Notification Center: failed and due renewal reminders |
+| `date_picker.png` | Jalali date picker over the payments page: month/year dropdowns, Persian digits, Friday and today marked, امروز button *(captured from v1.4.0)* |
+| `date_picker_dark.png` | The date picker in the dark theme *(captured from v1.4.0)* |
 | `login.png` | Login window |
 | `license_activation.png` | First-run license dialog: key entry or 7-day trial |
 
