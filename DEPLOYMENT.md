@@ -6,7 +6,7 @@
 
 ## Build Pipeline (GitHub Actions)
 
-All shipping artifacts are built by **`.github/workflows/build.yml`** from a clean checkout — no hand-built binaries.
+All shipping artifacts are built by **`.github/workflows/build.yml`** from a clean checkout — no hand-built binaries. The workflow runs **only when started manually** (Actions → Build → Run workflow): from a branch it produces downloadable artifacts; from a version tag it attaches the builds to that tag's release.
 
 | Target | Runner | Python / Qt / PyInstaller | Spec | Output |
 |--------|--------|---------------------------|------|--------|
@@ -52,9 +52,9 @@ pyinstaller --noconfirm --clean packaging/linux.spec   # Linux   → dist/AcaSma
 ### Release Checklist
 
 ```markdown
-- [ ] CI green on main (tests on 4 OS/Python configs + ruff)
+- [ ] Run CI manually on main — green on 4 OS/Python configs + ruff
 - [ ] Version bumped in version.py, setup.iss, mac.spec
-- [ ] Create the release / push tag `v1.x.y` → build.yml builds all 5 targets
+- [ ] Push tag `v1.x.y`, then run build.yml manually with that tag selected → builds all 5 targets
 - [ ] Assets attached to the release automatically (draft if the tag had no release)
 - [ ] Smoke-test Windows 7 installer on a VM, Windows 10/11, macOS, Linux
 - [ ] Verify license activation on a clean VM (trial + key)

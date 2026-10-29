@@ -17,7 +17,7 @@
 | Aspect | Detail |
 |--------|--------|
 | **Role** | Sole developer — requirements → domain modeling → architecture → implementation → tests → packaging → releases |
-| **Scale** | Production desktop app, used daily by the admin of a music academy; 12+ tagged releases (current: `v1.4.0`) |
+| **Scale** | Production desktop app, used daily by the admin of a music academy; 12+ tagged releases (current: `v1.4.1`) |
 | **Hardest problems solved** | Schedule-as-truth domain model (no `sessions` table), derived & reversible term completion, three-state attendance with reschedule-as-cancellation, SMS sends moved off the UI thread with an exact-outcome ledger, Ed25519 offline license system with device binding & trial |
 | **Tech depth** | SQLite migrations v2–v8 (WAL, online-backup before every migration), Shamsi/Jalali calendar throughout, single-window sidebar shell with Ctrl+K command palette, token-based light/dark theming, cross-platform PyInstaller builds from CI |
 | **Testing** | **653 pytest tests** — domain/repo tests over real SQLite **plus ~540 headless pytest-qt GUI tests** that drive real pages (save attendance, send SMS through a fake transport, navigate the shell); CI on Windows (Py 3.8 & 3.11), macOS and Linux |
@@ -90,7 +90,8 @@ All screenshots use fictional demo data.
 | ![Attendance](SCREENSHOTS/attendance.png) **Attendance** — computed roster, cancel, resend reminder | ![Command palette](SCREENSHOTS/command_palette.png) **Ctrl+K command palette** |
 | ![Notification center](SCREENSHOTS/notification_center.png) **Notification Center** — failed & due reminders | ![Attendance report](SCREENSHOTS/report_attendance.png) **Attendance report** — per-date status grid, Excel export |
 | ![Financial report](SCREENSHOTS/report_financial.png) **Financial report** — tuition, extras, debt per term | ![SMS delivery report](SCREENSHOTS/report_sms_delivery.png) **SMS Delivery Report** — append-only send log |
-| ![Jalali date picker](SCREENSHOTS/date_picker.png) **Jalali date picker** — month/year dropdowns, Persian digits, Friday and today marked | ![Jalali date picker (dark)](SCREENSHOTS/date_picker_dark.png) **Date picker, dark theme** — same grid on the dark tokens |
+| ![Jalali date picker](SCREENSHOTS/date_picker.png) **Jalali date picker** — click the title for a 12-year page and a month page, Persian digits, Friday and today marked | ![Jalali date picker (dark)](SCREENSHOTS/date_picker_dark.png) **Date picker, dark theme** — same grid on the dark tokens |
+| ![Date picker — year page](SCREENSHOTS/date_picker_years.png) **Year page** — 12 years per page, arrows turn the page | ![Date picker — month page](SCREENSHOTS/date_picker_months.png) **Month page** — pick a month, back to the days |
 
 More in [SCREENSHOTS/](SCREENSHOTS/) and the index in [VIDEO_DEMO.md](VIDEO_DEMO.md).
 
@@ -116,7 +117,7 @@ More in [SCREENSHOTS/](SCREENSHOTS/) and the index in [VIDEO_DEMO.md](VIDEO_DEMO
 
 ## 📦 Releases & Distribution
 
-- **12+ tagged releases** (current: `v1.4.0`)
+- **12+ tagged releases** (current: `v1.4.1`)
 - Built by CI on every `v*` tag and attached to the GitHub Release:
 
 | Asset | Platform |
@@ -152,7 +153,7 @@ tests/
 
 ## 🚀 What's Next (Roadmap)
 
-- [x] GitHub Actions CI (pytest on push; Windows Py 3.8/3.11, macOS, Linux)
+- [x] GitHub Actions CI (pytest, run on demand; Windows Py 3.8/3.11, macOS, Linux)
 - [x] Headless widget tests (`QT_QPA_PLATFORM=offscreen`, pytest-qt)
 - [x] Automated cross-platform release builds
 - [x] Deeper modules: term progress, attendance recording, renewal reminder, enrollment, config seam

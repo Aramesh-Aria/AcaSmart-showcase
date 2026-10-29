@@ -263,7 +263,7 @@ CREATE TABLE users (id PK, mobile, password);   -- password stored hashed
 ## Cross-Platform Build Pipeline
 
 ```
-git tag v1.x.y  ──▶  GitHub Actions: .github/workflows/build.yml
+git tag v1.x.y + Run workflow (tag selected)  ──▶  .github/workflows/build.yml
                           │
      ┌──────────────┬─────┴────────┬────────────────┬────────────────┐
      ▼              ▼              ▼                ▼                ▼

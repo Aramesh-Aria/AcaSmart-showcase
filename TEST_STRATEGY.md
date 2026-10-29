@@ -72,7 +72,7 @@
 
 ## CI (GitHub Actions)
 
-**`ci.yml`** — every push and pull request to `main`:
+**`ci.yml`** — started manually from the Actions tab (no automatic runs on push or PR):
 
 | OS | Python | Track |
 |----|--------|-------|
@@ -83,7 +83,7 @@
 
 Steps: `pip install -r requirements.txt` → `pytest -v` with `QT_QPA_PLATFORM=offscreen` → `python -m compileall -q acasmart`; a separate job runs `ruff check` (pinned version, curated rule set that stays compatible with the 3.8 track).
 
-**`build.yml`** — release builds for all five targets (see [DEPLOYMENT.md](DEPLOYMENT.md)).
+**`build.yml`** — release builds for all five targets, also started manually (see [DEPLOYMENT.md](DEPLOYMENT.md)).
 
 ### Lessons CI taught
 
