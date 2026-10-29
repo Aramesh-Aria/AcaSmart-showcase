@@ -80,7 +80,7 @@
 
 ## Screenshots
 
-All in [SCREENSHOTS/](SCREENSHOTS/), captured from **v1.3.21** on macOS (Retina, 2880×1800) over a seeded demo database — every name, phone number and national code is fictional.
+All in [SCREENSHOTS/](SCREENSHOTS/), captured from **v1.3.21** on macOS (Retina, 2880×1800) over a seeded demo database (the payments, term-enrollment and date-picker shots from **v1.5.0**) — every name, phone number and national code is fictional.
 
 | File | Shows |
 |------|-------|
@@ -88,8 +88,8 @@ All in [SCREENSHOTS/](SCREENSHOTS/), captured from **v1.3.21** on macOS (Retina,
 | `dashboard_dark.png` | Same dashboard in the dark theme |
 | `attendance.png` | Attendance for one class/date: computed roster, present/absent, cancel, delete, resend reminder |
 | `attendance_dark.png` | Attendance in the dark theme |
-| `term_enrollment.png` | Term enrollment: student, class, start date snapped to weekday, active enrollments of the class |
-| `payments.png` | Payment form for a term with live debt / consumption status |
+| `term_enrollment.png` | Term enrollment: compact two-column card — student, class, start date snapped to weekday, session time — and the active enrollments of the class |
+| `payments.png` | Payment form for a term in compact two-column cards, with live debt / consumption status |
 | `manual_sms.png` | Manual SMS: recipient list with preselection, message preview, retry for failed sends |
 | `students.png` | Student form (checksum-validated national code, normalized phone) |
 | `teachers.png` | Teacher form with taught instruments |
@@ -104,8 +104,8 @@ All in [SCREENSHOTS/](SCREENSHOTS/), captured from **v1.3.21** on macOS (Retina,
 | `settings.png` | Academy settings, verified backup/restore, password and license details |
 | `command_palette.png` | Ctrl+K command palette over the dashboard |
 | `notification_center.png` | Notification Center: failed and due renewal reminders |
-| `date_picker.png` | Jalali date picker over the payments page: click the title for a 12-year page and a month page, Persian digits, Friday and today marked, امروز button *(captured from v1.4.0)* |
-| `date_picker_dark.png` | The date picker in the dark theme *(captured from v1.4.0)* |
+| `date_picker.png` | Jalali date picker over the payments page: click the title for a 12-year page and a month page, Persian digits, Friday and today marked, امروز button |
+| `date_picker_dark.png` | The date picker in the dark theme |
 | `date_picker_years.png` | Date picker year page: 12 years (4 × 3), selected and current year marked, arrows turn 12 years |
 | `date_picker_months.png` | Date picker month page: the 12 months (4 × 3) after picking a year |
 | `login.png` | Login window |

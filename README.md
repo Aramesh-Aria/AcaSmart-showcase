@@ -17,7 +17,7 @@
 | Aspect | Detail |
 |--------|--------|
 | **Role** | Sole developer — requirements → domain modeling → architecture → implementation → tests → packaging → releases |
-| **Scale** | Production desktop app, used daily by the admin of a music academy; 12+ tagged releases (current: `v1.4.1`) |
+| **Scale** | Production desktop app, used daily by the admin of a music academy; 12+ tagged releases (current: `v1.5.0`) |
 | **Hardest problems solved** | Schedule-as-truth domain model (no `sessions` table), derived & reversible term completion, three-state attendance with reschedule-as-cancellation, SMS sends moved off the UI thread with an exact-outcome ledger, Ed25519 offline license system with device binding & trial |
 | **Tech depth** | SQLite migrations v2–v8 (WAL, online-backup before every migration), Shamsi/Jalali calendar throughout, single-window sidebar shell with Ctrl+K command palette, token-based light/dark theming, cross-platform PyInstaller builds from CI |
 | **Testing** | **653 pytest tests** — domain/repo tests over real SQLite **plus ~540 headless pytest-qt GUI tests** that drive real pages (save attendance, send SMS through a fake transport, navigate the shell); CI on Windows (Py 3.8 & 3.11), macOS and Linux |
@@ -117,7 +117,7 @@ More in [SCREENSHOTS/](SCREENSHOTS/) and the index in [VIDEO_DEMO.md](VIDEO_DEMO
 
 ## 📦 Releases & Distribution
 
-- **12+ tagged releases** (current: `v1.4.1`)
+- **12+ tagged releases** (current: `v1.5.0`)
 - Built by CI on every `v*` tag and attached to the GitHub Release:
 
 | Asset | Platform |

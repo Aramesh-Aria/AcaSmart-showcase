@@ -47,7 +47,7 @@ pyinstaller --noconfirm --clean packaging/linux.spec   # Linux   → dist/AcaSma
 
 ### Versioning
 - **Scheme:** `v<major>.<minor>.<patch>` (e.g., `v1.3.21`)
-- **Current:** `v1.4.0`; 12+ releases
+- **Current:** `v1.5.0`; 12+ releases
 
 ### Release Checklist
 
